@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video</title>
+    <style>
+        .button{
+            width: 200px;
+            height: 50px;
+            border: none;
+            background-color: rgb(126, 0, 0);
+            color: azure;
+        }
+        .progress_bar{
+            margin: 10px 0;
+            width: 400px;
+            height: 50px;
+            background-color: aliceblue;
+            
+        }
+        .progress_fill{
+            width: 0%;
+            height: 50px;
+            background-color: rgb(141, 21, 21);
+        }
+
+    </style>
+</head>
+<body>
+    <div>
+        <video width="1080" height="566" id="meuvideo">
+            <source src="tormenta.mp4" type="video/mp4" >
+        </video>
+    </div>    
+    <div>
+        <button class="button" type="button" onclick="video.play()">   Play    </button>
+        <button class="button" type="button" onclick="video.pause()">  Pause   </button>
+    </div>
+    <div class="progress_bar">
+        <div class="progress_fill"></div>
+    </div>
+    <!-- <meter id="progress_bar"></meter>  -->
+
+    <div>
+        <p>Tempo atual: <span id="tempo_atual"> - </span></p>
+    </div>
+    <script>
+        //Criar variavel para linkar com video
+        let video = document.getElementById('meuvideo');
+
+        video.addEventListener('timeupdate', function(){                  //Funcao necessaria para atualizar o tempo com meter.
+
+        let progress         = document.getElementById('progress');       //Captacao de variaveis pelo ID.
+        let duration         = document.getElementById('duration');
+        let progress_bar     = document.getElementById('progress_bar');
+        
+        let progress_fill    = document.querySelector('.progress_fill');
+
+        //progress_bar.max     = video.duration;                            //Define o limite para a barra de acordo com a duracao do video.
+        //progress_bar.value   = video.currentTime;                         //Define valor o valor atual para a barra de acordo com o video.
+
+
+        let tempo_proporcao  =  video.currentTime / video.duration      // Divide tempo atual por tempo total e atribui a variavel.
+        let tempo_proporcao_final = tempo_proporcao * 100;              // Converte decimal pra número.
+        progress_fill.style.width= tempo_proporcao_final + '%';         //  Usa o decimal para o inserir dentro do css e concatena um %
+
+        let tempo_atual     = document.getElementById('tempo_atual');
+        tempo_atual.textContent  = video.currentTime.toFixed(1);
+    })
+    </script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio</title>
+    <style>
+        #img-play{
+            width: 100px;
+        }
+
+        .progress_bar{
+            margin: 10px 0;
+            width: 400px;
+            height: 20px;
+            background-color: aliceblue;
+            
+        }
+        .progress_fill{
+            width: 0%;
+            height: 20px;
+            background-color: rgb(141, 21, 21);
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="meu-audio" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+
+    <img id="img-play" src="play.png" alt="play" onclick=" carregaAudio()">
+
+    <div class="progress_bar">
+        <div class="progress_fill"></div>
+    </div>
+
+    <script>
+        let meuAudio        = document.getElementById('meu-audio');
+        let audioLink       = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
+        let imgPlay         = document.getElementById('img-play');
+        let playLink        = 'play.png';
+        let pauseLink       = 'pause.jpg';
+
+        //Ciclo de play e pause:
+
+            function carregaAudio(){                                    //Função que liga o audio
+            meuAudio.play();
+            imgPlay.src = pauseLink;                                    //Muda a imagem para imagem de pause;
+            imgPlay.onclick = pauseAudio;                               //Passa para função de pause;
+            }
+            function pauseAudio(){                                      //Função que pausa o audio
+            meuAudio.pause();
+            imgPlay.src = playLink;                                     //Muda a imagem para imagem de play;
+            imgPlay.onclick = carregaAudio;                             //Passa para função de play;
+            }
+
+        //Fim do ciclo de play e pause:
+
+        meuAudio.addEventListener('timeupdate', function(){                 
+
+        let progress         = document.getElementById('progress');       //Captacao de variaveis pelo ID.
+        let duration         = document.getElementById('duration');
+        let progress_bar     = document.getElementById('progress_bar');
+        let progress_fill    = document.querySelector('.progress_fill');
+
+        let tempo_proporcao  =  meuAudio.currentTime / meuAudio.duration   //Criação da progress_bar    
+        let tempo_proporcao_final = tempo_proporcao * 100;              
+        progress_fill.style.width= tempo_proporcao_final + '%';   
+        })      
+    </script>
+</body>
+</html>
