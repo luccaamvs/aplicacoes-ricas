@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geolocation</title>
+</head>
+<body>
+
+<!-- http://dev.virtualearth.net/REST/v1/Locations/-23.669529933634024,-46.69956653789127?key=AjV1HJ1SfGj0s0baFersgTdBrNDJjHlL5Qsm1a8mRmER7wSdhYAWBcx61ccNy4ZJ -->
+
+<!-- http://dev.virtualearth.net/REST/v1/Locations/{point}?key={BingMapsKey} -->
+
+
+    <button onclick="atualPosicao()">Clique para exibir suas coordenadas e endereço atual.</button>
+
+    <p id="par"></p>
+
+    <script>
+    
+        let par = document.getElementById("par"); 
+
+        function atualPosicao(){
+
+            if('geolocation' in navigator){
+
+            navigator.geolocation.watchPosition( (position) => {
+            console.log(position);
+            let latitude = position.coords.latitude;
+            let longitude = position.coords.longitude;
+
+            let request = new XMLHttpRequest();
+            request.open('GET', 'http://dev.virtualearth.net/REST/v1/Locations/'+ latitude +','+ longitude +'?key=AjV1HJ1SfGj0s0baFersgTdBrNDJjHlL5Qsm1a8mRmER7wSdhYAWBcx61ccNy4ZJ');
+
+
+            request.addEventListener("readystatechange", function(){
+                
+                if (request.status == 200 && request.readyState == 4){
+
+                    //console.log(request.responseText);
+
+                    let responseJSON = JSON.parse(request.responseText);
+
+                    par.innerHTML = "Latitude: "        + latitude  +
+                                    "<br>Longitude: "   + longitude +
+                                    "<br>Endereço: "    + responseJSON.resourceSets[0].resources[0].name;
+                }
+            });
+
+            request.send();
+            
+        },
+
+
+        //Falta usar o LatLog para exibir a diferença de distâncias entre o atual endereço e minha residância. (Exibir em outra div.)
+        
+        function(error){
+            console.log('error', error);
+        })} else{
+            alert('Não tem geolocalização.');
+        }
+
+    }
+
+    </script>
+</body>
+</html>
